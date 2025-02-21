@@ -41,7 +41,7 @@ resource "aws_instance" "example_server" {
 
   tags = {
     "hello" = "terraform"
-    "Name"  = "Web Server"
+    "Name"  = var.server_name
   }
 }
 
