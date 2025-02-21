@@ -1,22 +1,6 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "5.87.0"
-    }
-  }
-
-  backend "s3" {
-    bucket         = "terraform-class-2025-state-bucket"
-    dynamodb_table = "TerraformLock"
-    encrypt        = true
-    key            = "development/terraform-class/state"
-    region         = "eu-west-2"
-  }
-}
-
-provider "aws" {
-  region = "eu-west-2"
+locals {
+  server_name = var.server_config.name
+  server_type = var.server_config.type
 }
 
 data "aws_ami" "ubuntu" {
@@ -39,10 +23,10 @@ resource "aws_instance" "example_server" {
   count = var.create_instance ? 1 : 0
 
   ami           = data.aws_ami.ubuntu.id
-  instance_type = var.server_config.type
+  instance_type = local.server_type
 
   tags = {
     "hello" = "terraform"
-    "Name"  = var.server_config.name
+    "Name"  = local.server_name
   }
 }
