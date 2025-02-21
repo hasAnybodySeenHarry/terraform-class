@@ -36,6 +36,8 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "example_server" {
+  count = var.create_instance ? 1 : 0
+
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.server_config.type
 
