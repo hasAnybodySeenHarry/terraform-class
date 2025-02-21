@@ -37,11 +37,10 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "example_server" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = var.server_type
+  instance_type = var.server_config.type
 
   tags = {
     "hello" = "terraform"
-    "Name"  = var.server_name
+    "Name"  = var.server_config.name
   }
 }
-
