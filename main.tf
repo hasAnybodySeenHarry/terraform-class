@@ -1,6 +1,13 @@
 locals {
   server_name = var.server_config.name
   server_type = var.server_config.type
+
+  anywhere     = "0.0.0.0/0"
+  all_ports    = "-1"
+  ssh_port     = 22
+  tcp_protocol = "tcp"
+
+  postgres_port = 5432
 }
 
 data "aws_ami" "ubuntu" {
@@ -20,13 +27,17 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "example_server" {
-  count = var.create_instance ? 1 : 0
+  count = var.create_instance ? var.server_count : 0
 
   ami           = data.aws_ami.ubuntu.id
   instance_type = local.server_type
 
   tags = {
     "hello" = "terraform"
-    "Name"  = local.server_name
+    "Name"  = "${local.server_name}-${count.index + 1}"
   }
+
+  vpc_security_group_ids = [
+    aws_security_group.allow_ssh.id,
+  ]
 }
