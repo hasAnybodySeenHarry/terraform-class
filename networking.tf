@@ -20,6 +20,13 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
   ip_protocol       = local.tcp_protocol
 }
 
+resource "aws_vpc_security_group_ingress_rule" "allow_http_on_8080" {
+  security_group_id = aws_security_group.allow_ssh.id
+  cidr_ipv4         = local.anywhere
+  from_port         = local.app_port
+  to_port           = local.app_port
+  ip_protocol       = local.tcp_protocol
+}
 
 resource "aws_vpc_security_group_egress_rule" "allow_all_traffic" {
   security_group_id = aws_security_group.allow_ssh.id

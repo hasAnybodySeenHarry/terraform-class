@@ -9,6 +9,6 @@ output "vpc_cidr" {
 }
 
 output "db_endpoint" {
-  value       = aws_db_instance.postgres_db.endpoint
+  value       = module.rds.db_endpoint
   description = "The endpoint of the created Postgres DB"
 }

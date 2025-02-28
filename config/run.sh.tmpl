@@ -1,0 +1,20 @@
+#!/bin/bash
+apt-get update -y
+
+apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+apt-get update -y
+apt-get install -y docker-ce
+
+systemctl start docker
+systemctl enable docker
+
+docker run -d --name dummy-app -p 8080:8080 \
+  -e DB_USER=${db_username} \
+  -e DB_PASSWORD=${db_password} \
+  -e DB_HOST=${db_host} \
+  -e DB_PORT="5432" \
+  -e DB_NAME=${db_name} \
+  demona9458/dummy-app:latest
