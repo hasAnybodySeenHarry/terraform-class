@@ -13,5 +13,7 @@ spec:
           - path: /
             pathType: "Prefix"
             backend:
-              serviceName: dummy-app-service
-              servicePort: 8080
+            service:
+              name: dummy-app-service
+              port:
+                number: 8080
